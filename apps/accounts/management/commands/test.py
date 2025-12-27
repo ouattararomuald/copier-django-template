@@ -1,4 +1,4 @@
-from apps.common.logging import get_logger
+from apps.core.logging import get_logger
 from django.core.management import BaseCommand
 
 

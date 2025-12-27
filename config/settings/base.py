@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "djoser",
     "whitenoise",
     # Internal apps
-    "apps.common",
+    "apps.core",
     "apps.accounts",
 ]
 

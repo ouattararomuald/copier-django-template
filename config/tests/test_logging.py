@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import structlog
 
-import apps.common.logging as logmod
+import config.logging as logmod
 
 
 @pytest.fixture(autouse=True)
@@ -57,7 +57,7 @@ def test_configure_structlog_output(monkeypatch, capsys):
     monkeypatch.setenv("LOG_FORMAT", "json")
     monkeypatch.setenv("LOG_LEVEL", "INFO")
 
-    logmod.configure_structlog(debug=False)
+    logmod.configure_logging(debug=False)
     logger = logmod.get_logger("test")
 
     logger.info("hello", foo="bar")

@@ -20,7 +20,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 DEBUG = False
 
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", subcast=str)
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", [], subcast=str)
 
 # Application definition
 
@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Security
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", subcast=str)
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", [], subcast=str)
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/

@@ -1,0 +1,43 @@
+# https://taskfile.dev
+version: '3'
+
+tasks:
+  default:
+    desc: Run all code quality checks (format + lint)
+    deps:
+      - :env
+    cmds:
+      - task: format:check
+      - task: check
+      - task: security
+
+  format:check:
+    desc: Check code formatting without modifying files
+    cmds:
+      - uv run ruff format --check .
+
+  format:apply:
+    desc: Apply automatic code formatting
+    cmds:
+      - uv run ruff format .
+
+  check:
+    desc: Run linting checks without modifying files
+    cmds:
+      - uv run ruff check .
+
+  fix:
+    desc: Automatically fix linting issues where possible
+    cmds:
+      - uv run ruff check --fix .
+
+  fix-all:
+    desc: Format code and automatically fix all lint issues
+    cmds:
+      - task: format:apply
+      - task: fix
+
+  security:
+    desc: Run security checks
+    cmds:
+      - uv run bandit -c pyproject.toml -r apps

@@ -1,0 +1,47 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  default:
+    desc: Run the tests
+    deps:
+      - :env
+    cmds:
+      - uv run pytest --reuse-db -x {{.CLI_ARGS}}
+
+  fast:
+    desc: Run tests without coverage (faster)
+    deps:
+      - :env
+    cmds:
+      - uv run pytest --reuse-db -x --no-cov {{.CLI_ARGS}}
+
+  coverage:
+    desc: Run tests with coverage report
+    deps:
+      - :env
+    cmds:
+      - uv run pytest --cov --cov-report=html --cov-report=term-missing {{.CLI_ARGS}}
+      - echo "Coverage report generated at htmlcov/index.html"
+
+  unit:
+    desc: Run only unit tests (fast, no database)
+    deps:
+      - :env
+    cmds:
+      - uv run pytest -m "not integration" --reuse-db {{.CLI_ARGS}}
+
+  integration:
+    desc: Run only integration tests
+    deps:
+      - :env
+    cmds:
+      - uv run pytest -m integration --reuse-db {{.CLI_ARGS}}
+
+  failed:
+    desc: Re-run only failed tests
+    deps:
+      - :env
+    cmds:
+      - uv run pytest --lf --reuse-db {{.CLI_ARGS}}

@@ -1,0 +1,32 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  migrate:
+    desc: Updates database schema. Manages both apps with migrations and those without
+    deps:
+      - env
+    cmds:
+      - uv run manage.py migrate {{.CLI_ARGS}}
+
+  makemigrations:
+    desc: Creates new migration(s) for apps
+    deps:
+      - env
+    cmds:
+      - uv run manage.py makemigrations {{.CLI_ARGS}}
+
+  run:
+    desc: Starts a lightweight web server for development and also serves static files
+    deps:
+      - env
+    cmds:
+      - uv run manage.py runserver {{.CLI_ARGS}}
+
+  show_urls:
+    desc: Displays all of the url matching routes for the project.
+    deps:
+      - env
+    cmds:
+      - uv run manage.py show_urls

@@ -1,0 +1,14 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  lock:
+    desc: Verify that uv lock file is up-to-date
+    cmds:
+      - uv lock --check
+
+  migrations:check:
+    desc: Verify that Django migrations are up-to-date
+    cmds:
+      - uv run manage.py makemigrations --noinput --check

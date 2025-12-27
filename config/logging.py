@@ -1,4 +1,5 @@
 """A module for logging utilities."""
+
 import logging
 import os
 
@@ -89,8 +90,11 @@ def _get_renderer(debug: bool = False) -> structlog.typing.Processor:
     return renderer
 
 
-def configure_structlog(debug: bool = False):
+def configure_logging(debug: bool = False):
     """Configure structlog for the application."""
+    if structlog.is_configured():
+        return
+
     shared_processors = [
         structlog.contextvars.merge_contextvars,
         structlog.stdlib.filter_by_level,

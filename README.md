@@ -1,7 +1,6 @@
 # Cookiecutter Django DRF
 
-A modern Django REST Framework starter template for building production-ready APIs with authentication, documentation, 
-and best practices built-in.
+A modern [Copier](https://github.com/copier-org/copier) template for scaffolding a Django project with best practices built-in.
 
 ## Features
 
@@ -62,4 +61,12 @@ git add .
 git commit -m "initial commit"
 git remote add origin git@github.com:<username>/twitterclone.git
 git push -u origin main
+```
+
+## Development and Customization
+
+To test modifications to this template:
+
+```
+uv run copier copy ./copier-django-drf-template --trust --vcs-ref=HEAD my-test-project
 ```

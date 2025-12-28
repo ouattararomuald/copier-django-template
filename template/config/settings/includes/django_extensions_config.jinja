@@ -1,10 +1,8 @@
-from .base import *  # noqa: F403
-
-DEBUG = False
-
+{%- if use_django_extensions -%}
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/#getting-started
 INSTALLED_APPS += [
     "django_extensions",
 ]
+{%- endif -%}

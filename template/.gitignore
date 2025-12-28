@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL / cache files
+__pycache__/
+**/.*_cache/
+.cache
+.pytype/
+*.pyc
+*.db
+*.rdb
+.DS_Store
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+
+# Unit test / coverage reports / docs
+.tox/
+.nox/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+htmlcov/
+
+# IDE specific files
+.idea/
+.vscode/
+
+# Personal files
+.env
+*.sql
+*.sqlite*
+.venv*
+celerybeat-schedule
+.docker_volumes/

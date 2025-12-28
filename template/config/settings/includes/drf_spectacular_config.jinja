@@ -1,0 +1,23 @@
+{%- if use_drf_spectacular -%}
+# drf_spectacular
+# ------------------------------------------------------------------------------
+# https://drf-spectacular.readthedocs.io/en/latest/
+INSTALLED_APPS += [
+    "drf_spectacular",
+]
+
+REST_FRAMEWORK = {
+    **REST_FRAMEWORK,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# By Default swagger ui is available only to admin user(s). You can change permission classes to change that
+# See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "{{ project_name }} API",
+    "DESCRIPTION": "{{ project_description }}",
+    "VERSION": "{{ project_version }}",
+    "SERVE_PERMISSIONS": [],
+    "SCHEMA_PATH_PREFIX": "/api/",
+}
+{%- endif -%}

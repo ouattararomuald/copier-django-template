@@ -1,0 +1,9 @@
+from .base import *  # noqa: F403
+
+DEBUG = True
+
+{% include "template/config/settings/includes/django_debug_toolbar_config.jinja" %}
+
+{% include "template/config/settings/includes/django_extensions_config.jinja" %}
+
+{% include "template/config/settings/includes/drf_spectacular_config.jinja" %}

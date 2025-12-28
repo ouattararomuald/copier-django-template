@@ -1,0 +1,94 @@
+# https://github.com/gotofritz/copier-python-template/tree/main
+
+_jinja_extensions:
+  - copier_templates_extensions.TemplateExtensionLoader
+  - extensions/context.py:ContextUpdater
+
+_exclude:
+  - includes
+_subdirectory: template
+_skip_if_exists:
+  - ".env"
+
+project_name:
+  type: str
+  help: "What is your project name?"
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+    project_name must start with a letter, followed one or more letters, digits or dashes all lowercase.
+    {% endif %}
+
+project_version:
+  type: str
+  help: "What is your project version"
+  default: 0.1.0
+
+project_description:
+  type: str
+  help: "What is your project description?"
+  default: Django Project
+
+author_name:
+  type: str
+  help: "What is the author name?"
+
+django_version:
+  type: str
+  help: "Django version to use"
+  choices:
+    Django 4.2: 4.2
+    Django 5.2: 5.2
+    Django 6.0: 6.0
+  default: 5.2
+
+database_engine:
+  type: str
+  help: "Database engine to use"
+  choices:
+    - postgres
+    - sqlite
+  default: postgres
+
+postgres_version:
+  type: str
+  help: "PostgreSQL version"
+  choices:
+    - 18
+    - 17
+    - 16
+  default: 18
+  when: "{{ database_engine == 'postgres' }}"
+
+python_version:
+  type: str
+  help: "Python version to use"
+  choices: |
+    {%- if django_version == '6.0' -%}
+    - 3.14
+    - 3.13
+    - 3.12
+    {%- elif django_version == '4.2' -%}
+    - 3.12
+    - 3.11
+    - "3.10"
+    {%- else -%}
+    - 3.14
+    - 3.13
+    - 3.12
+    - 3.11
+    {%- endif -%}
+
+use_django_toolbar:
+  type: bool
+  help: "Use Django Debug Toolbar?"
+  default: false
+
+use_django_extensions:
+  type: bool
+  help: "Use Django Extensions?"
+  default: false
+
+use_drf_spectacular:
+  type: bool
+  help: "Use DRF Spectacular?"
+  default: false

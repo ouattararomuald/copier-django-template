@@ -1,15 +1,13 @@
 import secrets
 import string
 
-from copier_templates_extensions import ContextHook
+from copier_template_extensions import ContextHook
 from typing import Any
 import datetime
 
 
 class ContextUpdater(ContextHook):
-    update = False
-
-    def hook(self, context: dict[str, Any]) -> dict[str, Any]:
+    def hook(self, context: dict[str, Any]) -> None:
         project_name = context.get("project_name")
         if project_name:
             project_slug = context["project_slug"] = project_name.lower().replace(" ", "-")

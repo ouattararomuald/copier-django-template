@@ -1,0 +1,29 @@
+name: Tests
+
+on: [push, pull_request]
+
+env:
+  DJANGO_SETTINGS_MODULE: ${{ vars.DJANGO_SETTINGS_MODULE }}
+  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  DB_NAME: ${{ vars.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          python-version: '3.13'
+
+      - name: Verifies that lock file is up-to-date
+        run: uv lock
+
+      - name: Run tests
+        run: |
+          uv run --frozen pytest

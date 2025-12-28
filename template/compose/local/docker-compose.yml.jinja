@@ -1,19 +1,7 @@
 services:
-  postgres:
-    image: postgres:18-alpine
-    environment:
-      POSTGRES_DB: ${DB_NAME:-postgres}
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-    ports:
-      - "${DB_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+  {% if database_engine == 'postgres' %}
+  {% include "template/compose/local/includes/postgres_docker.yml.jinja" %}
+  {% endif %}
 
   redis:
     image: redis:8.4.0-alpine
@@ -43,5 +31,7 @@ services:
 
 volumes:
   mailpit-data:
-  postgres_data:
   redis_data:
+  {% if database_engine == 'postgres' %}
+  postgres_data:
+  {% endif %}

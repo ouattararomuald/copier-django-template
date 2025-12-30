@@ -82,9 +82,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/{{ django_version }}/ref/settings/#databases
-{%- if database_engine == 'postgres' %}
+{% if database_engine == 'postgres' %}
 {%- include "template/config/settings/includes/db_config_postgres_template.jinja" %}
-{%- else %}
+{% else %}
 {%- include "template/config/settings/includes/db_config_sqlite_template.jinja" %}
 {%- endif %}
 
@@ -105,6 +105,15 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/stable/ref/settings/#default-auto-field
+
+{%- if django_version in ['4.2', '5.2'] %}
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+{%- else %}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+{%- endif %}
 
 # Security
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", [], subcast=str)

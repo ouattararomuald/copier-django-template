@@ -12,7 +12,7 @@ def root_path() -> str:
 @pytest.fixture(scope="session")
 def answers() -> dict[str, str]:
     return {
-        "project_name": "test-project",
+        "project_name": "postgres",
         "project_version": "0.1.0",
         "project_description": "A django project",
         "project_url": "https://github.com/ouattararomuald/test-project",
@@ -20,7 +20,7 @@ def answers() -> dict[str, str]:
         "django_version": "5.2",
         "database_engine": "postgres",
         "postgres_version": 17,
-        "python_version": "3.12",
+        "python_version": "3.13",
         "use_django_toolbar": True,
         "use_django_extensions": True,
         "use_drf_spectacular": True,

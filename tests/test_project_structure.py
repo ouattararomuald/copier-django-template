@@ -1,17 +1,12 @@
-from dataclasses import dataclass
+import os
+import subprocess
 from pathlib import Path
-from typing import Optional, Union, Any
+from typing import Union, Any
 
 import pytest
 from copier import run_copy
 
-
-@dataclass(frozen=True)
-class File:
-    """Validator for a generated file."""
-    must_have_content: bool = True
-    contains: Optional[list[str]] = None
-    is_binary: bool = False
+from tests.types import File
 
 
 def assert_project_structure(base: Path, spec: dict[str, Union[File, dict]]):
@@ -41,7 +36,6 @@ def assert_project_structure(base: Path, spec: dict[str, Union[File, dict]]):
 
         elif isinstance(expectation, dict):
             assert p.is_dir(), f"Expected directory: {path_str}"
-
 
 @pytest.mark.parametrize(
     "database_engine,postgres_version,django_version,add_optional_dependencies",
@@ -77,13 +71,19 @@ def test_defaults(
     project_description = answers["project_description"]
     project_version = answers["project_version"]
 
+    # Ensure python_version is compatible with Django version for the prompt
+    if django_version == "4.2":
+        answers["python_version"] = "3.12"
+    else:
+        answers["python_version"] = "3.13"
+
     destination_path = tmp_path / "generated_project"
     run_copy(
         src_path=root_path,
         dst_path=destination_path,
         data=answers,
         vcs_ref="HEAD",
-        skip_tasks=True,
+        skip_tasks=False,
         unsafe=True,
     )
 
@@ -224,3 +224,108 @@ def test_defaults(
     }
 
     assert_project_structure(destination_path, project_spec)
+
+
+@pytest.mark.parametrize(
+    "database_engine,postgres_version,django_version,python_version",
+    [
+        ("postgres", 17, "5.2", "3.13"), ("postgres", 18, "6.0", "3.13"),
+    ]
+)
+def test_generated_project_tests_execution(
+    root_path: str,
+    tmp_path: Path,
+    answers: dict[str, Any],
+    database_engine: str,
+    postgres_version: int,
+    django_version: str,
+    python_version: str,
+) -> None:
+    if database_engine == "postgres":
+        answers["postgres_version"] = postgres_version
+    answers["django_version"] = django_version
+    answers["database_engine"] = database_engine
+    answers["python_version"] = python_version
+    answers["use_django_toolbar"] = True
+    answers["use_django_extensions"] = True
+    answers["use_drf_spectacular"] = True
+    answers["project_name"] = "postgres"
+
+    destination_path = tmp_path / "generated_project"
+    run_copy(
+        src_path=root_path,
+        dst_path=destination_path,
+        data=answers,
+        vcs_ref="HEAD",
+        skip_tasks=False,
+        unsafe=True,
+    )
+
+    run_generated_project_tests(destination_path)
+
+
+def run_generated_project_tests(project_path: Path):
+    """Runs pytest inside the generated project."""
+    test_env = os.environ.copy()
+    test_env["DJANGO_SETTINGS_MODULE"] = "config.settings.test"
+
+    result = subprocess.run(
+        ["cp", ".env.default", ".env"],
+        cwd=project_path,
+        capture_output=True,
+        text=True,
+        env=test_env,
+    )
+
+    if result.returncode != 0:
+        pytest.fail(
+            f"Copy of .env.default in generated project failed with return code {result.returncode}.\n"
+            f"STDOUT:\n{result.stdout}\n"
+            f"STDERR:\n{result.stderr}"
+        )
+
+    result = subprocess.run(
+        ["task", "test:coverage", "--", "--cov-fail-under=100"],
+        cwd=project_path,
+        capture_output=True,
+        text=True,
+        env=test_env,
+    )
+
+    if result.returncode != 0:
+        pytest.fail(
+            f"Tests in generated project failed with return code {result.returncode}.\n"
+            f"STDOUT:\n{result.stdout}\n"
+            f"STDERR:\n{result.stderr}"
+        )
+
+    result = subprocess.run(
+        ["task", "lint"],
+        cwd=project_path,
+        capture_output=True,
+        text=True,
+        env=test_env,
+    )
+
+    if result.returncode != 0:
+        pytest.fail(
+            f"Quality checks in generated project failed with return code {result.returncode}.\n"
+            f"STDOUT:\n{result.stdout}\n"
+            f"STDERR:\n{result.stderr}"
+        )
+
+    if bool(os.environ.get("CI", "false") == "true"):
+        result = subprocess.run(
+            ["task", "checks:migrations:check"],
+            cwd=project_path,
+            capture_output=True,
+            text=True,
+            env=test_env,
+        )
+
+        if result.returncode != 0:
+            pytest.fail(
+                f"Django migrations check in generated project failed with return code {result.returncode}.\n"
+                f"STDOUT:\n{result.stdout}\n"
+                f"STDERR:\n{result.stderr}"
+            )

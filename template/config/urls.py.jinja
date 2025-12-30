@@ -1,12 +1,15 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
+{% if use_drf_spectacular -%}
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+{%- endif %}
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/auth/", include("djoser.urls")),
     re_path(r"^api/auth/", include("djoser.urls.jwt")),
+{% if use_drf_spectacular %}
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger-ui/",
@@ -18,10 +21,13 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
+{%- endif %}
 ]
 
+{%- if use_django_toolbar %}
 if settings.DEBUG:
     if "debug_toolbar" in settings.INSTALLED_APPS:
         from debug_toolbar.toolbar import debug_toolbar_urls
 
         urlpatterns += debug_toolbar_urls()
+{%- endif %}

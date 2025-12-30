@@ -1,0 +1,277 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+## Features
+
+- 🚀 Django {{ django_version }} with Django REST Framework
+- 🔐 JWT Authentication with [djoser](https://djoser.readthedocs.io/)
+- 👤 Custom User model ready to extend
+- 📦 Modern Python packaging with [uv](https://github.com/astral-sh/uv)
+- 🎨 Code formatting and linting with [ruff](https://github.com/astral-sh/ruff)
+- ⚡ Task automation with [Task](https://taskfile.dev/)
+{%- if database_engine == 'postgres' %}
+- 🐘 PostgreSQL {{ postgres_version }} database
+{%- else %}
+- 💾 SQLite database
+{%- endif %}
+- 🐳 Docker support for local development
+- 📧 Email testing with [Mailpit](https://github.com/axllent/mailpit/)
+- ✅ Testing with [pytest](https://docs.pytest.org/)
+{%- if use_django_toolbar %}
+- 🔧 Django Debug Toolbar for development
+{%- endif %}
+{%- if use_django_extensions %}
+- 🛠️ Django Extensions for enhanced management commands
+{%- endif %}
+{%- if use_drf_spectacular %}
+- 📚 API documentation with drf-spectacular
+{%- endif %}
+
+## Prerequisites
+
+- Python {{ python_version }}
+- [uv](https://github.com/astral-sh/uv) - Fast Python package installer
+{%- if database_engine == 'postgres' %}
+- PostgreSQL {{ postgres_version }} (or use Docker)
+{%- endif %}
+- [Task](https://taskfile.dev/) (optional but recommended)
+- Docker and Docker Compose (optional, for containerized development)
+
+## Quick Start
+
+### 1. Install Dependencies
+
+```bash
+# Install Python dependencies
+uv sync
+
+# Activate the virtual environment (if needed)
+source .venv/bin/activate  # On Unix/macOS
+# or
+.venv\Scripts\activate  # On Windows
+```
+
+### 2. Configure Environment
+
+```bash
+# Copy the default environment file
+cp .env.default .env
+
+# Edit .env and update the values as needed
+# IMPORTANT: Change DJANGO_SECRET_KEY in production!
+```
+
+### 3. Database Setup
+
+{%- if database_engine == 'postgres' %}
+
+#### Option A: Using Docker (Recommended for Development)
+
+```bash
+# Start PostgreSQL, Redis, and Mailpit
+task docker:up
+
+# Or using docker-compose directly
+cd compose/local && docker-compose up -d
+```
+
+#### Option B: Local PostgreSQL
+
+Make sure PostgreSQL is running and update the database credentials in `.env`:
+
+```bash
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=5432
+```
+{%- else %}
+
+SQLite database will be created automatically. No additional setup needed.
+{%- endif %}
+
+### 4. Run Migrations
+
+```bash
+# Apply database migrations
+task migrate
+
+# Or using manage.py directly
+uv run --env-file .env manage.py migrate
+```
+
+### 5. Create a Superuser
+
+```bash
+uv run --env-file .env manage.py createsuperuser
+```
+
+### 6. Run the Development Server
+
+```bash
+# Start the Django development server
+task run
+
+# Or using manage.py directly
+uv run manage.py runserver
+```
+
+The application will be available at `http://localhost:8000`
+
+## Development
+
+### Available Tasks
+
+List all available tasks:
+
+```bash
+task
+
+# Or
+task --list-all
+```
+
+Common tasks:
+
+```bash
+# Django commands
+task migrate              # Run database migrations
+task makemigrations       # Create new migrations
+task createsuperuser      # Create a superuser
+task runserver           # Start development server
+task shell               # Open Django shell
+
+# Testing
+task test                # Run all tests
+task test:cov            # Run tests with coverage report
+task test:watch          # Run tests in watch mode
+
+# Code quality
+task lint                # Run linting checks
+task lint:fix            # Fix linting issues automatically
+task format              # Format code with ruff
+task format:check        # Check code formatting
+
+# Docker
+task docker:up           # Start all services
+task docker:down         # Stop all services
+task docker:logs         # View service logs
+```
+
+### Project Structure
+
+```
+.
+├── apps/                    # Django applications
+│   ├── accounts/           # User authentication and management
+│   ├── core/              # Core utilities and base models
+│   └── static/            # Static files (CSS, JS, images)
+├── config/                 # Django configuration
+│   ├── settings/          # Settings for different environments
+│   │   ├── base.py       # Base settings
+│   │   ├── local.py      # Local development settings
+│   │   ├── preprod.py    # Pre-production settings
+│   │   ├── production.py # Production settings
+│   │   └── test.py       # Test settings
+│   ├── urls.py           # URL configuration
+│   └── wsgi.py           # WSGI configuration
+├── compose/               # Docker compose files
+├── tests/                 # Shared test utilities
+├── utils/                 # Pure Python utilities (no Django dependencies)
+├── manage.py             # Django management script
+└── pyproject.toml        # Project dependencies and configuration
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Run all tests
+task test
+
+# Run with coverage report
+task test:cov
+
+# Run specific test file
+uv run --env-file .env pytest apps/accounts/tests/test_user_me.py
+
+# Run tests in parallel
+uv run --env-file .env pytest -n auto
+```
+
+## API Documentation
+
+{%- if use_drf_spectacular %}
+
+API documentation is available at:
+
+- Swagger UI: `http://localhost:8000/api/schema/swagger-ui/`
+- ReDoc: `http://localhost:8000/api/schema/redoc/`
+- OpenAPI Schema: `http://localhost:8000/api/schema/`
+{%- else %}
+
+The project uses Django REST Framework. You can explore the API by visiting:
+
+- API Root: `http://localhost:8000/api/`
+- Admin Panel: `http://localhost:8000/admin/`
+{%- endif %}
+
+### Authentication Endpoints
+
+- `POST /api/auth/jwt/create/` - Obtain JWT token
+- `POST /api/auth/jwt/refresh/` - Refresh JWT token
+- `POST /api/auth/jwt/verify/` - Verify JWT token
+- `POST /api/auth/users/` - Register new user
+- `POST /api/auth/users/activation/` - Activate user account
+- `GET /api/auth/users/me/` - Get current user profile
+- `PUT /api/auth/users/me/` - Update current user profile
+
+## Deployment
+
+### Environment Variables
+
+Before deploying to production, make sure to:
+
+1. Generate a new `DJANGO_SECRET_KEY`:
+   ```bash
+   python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+   ```
+
+2. Update all environment variables in `.env` or your hosting platform
+3. Set `DJANGO_SETTINGS_MODULE=config.settings.production`
+4. Configure `DJANGO_ALLOWED_HOSTS` with your domain
+5. Set up a production database
+6. Configure email settings for production
+7. Set up Redis for caching
+
+### Static Files
+
+Collect static files before deployment:
+
+```bash
+uv run manage.py collectstatic --noinput
+```
+
+### Database Migrations
+
+Always run migrations in production:
+
+```bash
+uv run manage.py migrate --noinput
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the terms specified by {{ author_name }}.
+
+## Support
+
+For issues and questions, please use the issue tracker.
+

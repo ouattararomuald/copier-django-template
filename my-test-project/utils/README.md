@@ -1,1 +1,0 @@
-A package for pure python helpers (no django dependencies)

@@ -3,22 +3,23 @@ name: Tests
 on: [push, pull_request]
 
 env:
-  DJANGO_SETTINGS_MODULE: ${{ vars.DJANGO_SETTINGS_MODULE }}
-  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  DB_NAME: ${{ vars.DB_NAME }}
-  DB_USER: ${{ secrets.DB_USER }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DJANGO_SETTINGS_MODULE: {{ '${{ vars.DJANGO_SETTINGS_MODULE }}' }}
+  DJANGO_SECRET_KEY: {{ '${{ secrets.DJANGO_SECRET_KEY }}' }}
+  DB_NAME: {{ '${{ vars.DB_NAME }}' }}
+  DB_USER: {{ '${{ secrets.DB_USER }}' }}
+  DB_PASSWORD: {{ '${{ secrets.DB_PASSWORD }}' }}
 
 jobs:
   tests:
     runs-on: ubuntu-latest
+{%- if database_engine == 'postgres' %}
     services:
       postgres:
-        image: postgres:18-alpine
+        image: postgres:{{ postgres_version }}-alpine
         env:
-          POSTGRES_USER: ${{ env.DB_USER }}
-          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
-          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: {{ '${{ env.DB_USER }}' }}
+          POSTGRES_PASSWORD: {{ '${{ env.DB_PASSWORD }}' }}
+          POSTGRES_DB: {{ '${{ env.DB_NAME }}' }}
         ports:
           - 5432:5432
         options: >-
@@ -26,6 +27,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+{%- endif %}
     steps:
       - uses: actions/checkout@v5
 
@@ -33,7 +35,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          python-version: '3.13'
+          python-version: '{{ python_version }}'
 
       - name: Verifies that lock file is up-to-date
         run: uv lock

@@ -1,7 +1,10 @@
 services:
-  {% if database_engine == 'postgres' %}
-  {% include "template/compose/local/includes/postgres_docker.yml.jinja" %}
-  {% endif %}
+{% if database_engine == 'postgres' %}
+{%- set pg -%}
+{%- include "template/compose/local/includes/postgres_docker.yml.jinja" -%}
+{%- endset -%}
+{{ pg | indent(2, true) }}
+{%- endif %}
 
   redis:
     image: redis:8.4.0-alpine
@@ -32,6 +35,6 @@ services:
 volumes:
   mailpit-data:
   redis_data:
-  {% if database_engine == 'postgres' %}
+{%- if database_engine == 'postgres' %}
   postgres_data:
-  {% endif %}
+{%- endif %}

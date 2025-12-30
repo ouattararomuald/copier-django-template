@@ -63,20 +63,20 @@ python_version:
   type: str
   help: "Python version to use"
   choices: |
-    {%- if django_version == '6.0' -%}
+    {% if django_version == '6.0' %}
     - 3.14
     - 3.13
     - 3.12
-    {%- elif django_version == '5.2' -%}
+    {% elif django_version == '5.2' %}
     - 3.14
     - 3.13
     - 3.12
     - 3.11
-    {%- else -%}
+    {% else %}
     - 3.12
     - 3.11
     - "3.10"
-    {%- endif -%}
+    {% endif %}
 
 use_django_toolbar:
   type: bool

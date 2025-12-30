@@ -1,4 +1,5 @@
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
+![Tests](https://github.com/ouattararomuald/copier-django-template/actions/workflows/tests.yml/badge.svg)
 
 # Cookiecutter Django DRF
 
@@ -35,7 +36,13 @@ curl -LsSf https://astral.sh/uv/install.sh | less
 powershell -c "irm https://astral.sh/uv/install.ps1 | more"
 ```
 
-2. Generate your project
+2. Install Taskfile (Optional but recommended)
+
+```bash
+
+```
+
+3. Generate your project
 
 ```bash
 # Create in a new directory (my-project)
@@ -48,8 +55,8 @@ uvx copier copy https://github.com/gotofritz/copier-python-template . --trust
 
 > Note: The `--trust` flag is required as the template executes setup scripts.
 
-3. **Configure your project** by answering the interactive prompts.
-4. Initialize git and create a remote repository
+4. **Configure your project** by answering the interactive prompts.
+5. Initialize git and create a remote repository
 
 ```bash
 cd my-project
@@ -61,7 +68,7 @@ gh repo create my-org/my-project --private --source=. --push
 # Or follow GitHub's instructions to push an existing repository
 ```
 
-5. Set up dependencies
+6. Set up dependencies
 
 ```bash
 uv sync

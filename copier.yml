@@ -92,3 +92,9 @@ use_drf_spectacular:
   type: bool
   help: "Use DRF Spectacular?"
   default: false
+
+_tasks:
+  - sh -c "[ -f .env ] || cp .env.default .env"
+  - ["uv", "sync", "--python", "{{ python_version }}"]
+  - ["uv", "run", "--env-file", ".env", "ruff", "format"]
+  - ["uv", "run", "--env-file", ".env", "manage.py", "makemigrations", "--settings=config.settings.test"]

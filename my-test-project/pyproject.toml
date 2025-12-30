@@ -1,0 +1,125 @@
+[project]
+name = "twitter"
+version = "0.1.0"
+description = "Django Project"
+readme = "README.md"
+requires-python = "==3.12.*"
+
+dependencies = [
+    "django~=4.2",
+    "djangorestframework>=3.16,<4",
+    "markdown>=3.10,<4",
+    "django-filter>=25.1,<26",
+    "django-cors-headers>=4.9.0,<5",
+    "django-debug-toolbar>=6.1.0,<7",
+    "django-extensions>=4.1,<5",
+    "djangorestframework-simplejwt>=5.5.1,<6",
+    "djoser>=2.3.3,<3",
+    "environs>=14.5.0,<15",
+    "ipython>=9.8.0,<10",
+    "psycopg[binary]>=3.3.2,<4",
+    "redis[hiredis]>=7.1.0,<8",
+    "structlog>=25.5.0,<26",
+    "whitenoise>=6.11.0,<7",
+]
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.2",
+    "coverage>=7.13.0",
+    "django-coverage-plugin>=3.2.0",
+    "django-stubs>=5.2.8",
+    "djangorestframework-stubs>=3.16.6",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "pytest-django>=4.11.1",
+    "pytest-mock>=3.15.1",
+    "pytest-xdist>=3.8.0",
+    "rich>=14.2.0",
+    "ruff>=0.14.10",
+    "types-redis>=4.6.0.20241004",
+]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+extend-exclude = [
+    "*/migrations/*.py",
+    "staticfiles/*",
+    "manage.py",
+]
+line-length = 120
+indent-width = 4
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "W",
+    "N",
+    "B",
+    "C4",
+    "UP",
+    "DJ",
+    "RUF",
+]
+ignore = [
+    "E501",  # Line too long - let formatter handle it
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401", "F403", "F405"]
+"**/migrations/*.py" = ["E501", "RUF012"]
+"**/tests/**/*.py" = ["S101"]  # Allow asserts
+"**/settings/*.py" = ["F405"]  # Allow star imports
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
+docstring-code-format = true
+docstring-code-line-length = 120
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = [
+    "--ds=config.settings.test",
+    "--reuse-db",
+    "-x",
+    "-n",
+    "auto",
+]
+python_files = [
+    "tests",
+    "tests.py",
+    "test_*.py",
+]
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]
+plugins = ["django_coverage_plugin"]
+
+[tool.coverage.report]
+skip_empty = true
+precision = 2
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "*/tests", "*/test_*.py"]
+skips = ["B101"]  # Asserts are fine

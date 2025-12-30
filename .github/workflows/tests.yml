@@ -12,6 +12,20 @@ env:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+          POSTGRES_DB: ${{ env.DB_NAME }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v5
 
@@ -23,6 +37,9 @@ jobs:
 
       - name: Verifies that lock file is up-to-date
         run: uv lock
+
+      - name: Install Task
+        uses: go-task/setup-task@v1
 
       - name: Run tests
         run: |

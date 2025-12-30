@@ -3,8 +3,8 @@ name: Django migrations check
 on: [push, pull_request]
 
 env:
-  DJANGO_SETTINGS_MODULE: ${{ vars.DJANGO_SETTINGS_MODULE }}
-  DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  DJANGO_SETTINGS_MODULE: {{ '${{ vars.DJANGO_SETTINGS_MODULE }}' }}
+  DJANGO_SECRET_KEY: {{ '${{ secrets.DJANGO_SECRET_KEY }}' }}
 
 jobs:
   migrations-check:
@@ -16,6 +16,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
+          python-version: '{{ python_version }}'
 
       - name: Verify latest Django migrations
         run: uv run manage.py makemigrations --noinput --check

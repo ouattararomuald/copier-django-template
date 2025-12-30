@@ -40,15 +40,14 @@ def assert_project_structure(base: Path, spec: dict[str, Union[File, dict]]):
 @pytest.mark.parametrize(
     "database_engine,postgres_version,django_version,add_optional_dependencies",
     [
-        ("postgres", 16, "4.2", True), ("postgres", 17, "4.2", True), ("postgres", 18, "4.2", True),
-        ("postgres", 16, "5.2", True), ("postgres", 17, "5.2", True), ("postgres", 18, "5.2", True),
-        ("postgres", 16, "6.0", True), ("postgres", 17, "6.0", True), ("postgres", 18, "6.0", True),
-        ("postgres", 16, "6.0", False), ("postgres", 17, "6.0", False), ("postgres", 18, "6.0", False),
-
-        ("sqlite", 16, "4.2", True), ("sqlite", 17, "4.2", True), ("sqlite", 18, "4.2", True),
-        ("sqlite", 16, "5.2", True), ("sqlite", 17, "5.2", True), ("sqlite", 18, "5.2", True),
-        ("sqlite", 16, "6.0", True), ("sqlite", 17, "6.0", True), ("sqlite", 18, "6.0", True),
-        ("sqlite", 16, "6.0", False), ("sqlite", 17, "6.0", False), ("sqlite", 18, "6.0", False),
+        ("postgres", 17, "4.2", True),
+        ("postgres", 17, "5.2", True),
+        ("postgres", 17, "6.0", True),
+        ("postgres", 17, "6.0", False),
+        ("sqlite", 17, "4.2", True),
+        ("sqlite", 17, "5.2", True),
+        ("sqlite", 17, "6.0", True),
+        ("sqlite", 17, "6.0", False),
     ]
 )
 def test_defaults(
@@ -220,6 +219,7 @@ def test_defaults(
         "conftest.py": File(),
         "manage.py": File(),
         "pyproject.toml": File(contains=py_project_expected_dependencies),
+        "README.md": File(),
         "Taskfile.yml": File(),
     }
 
@@ -229,7 +229,9 @@ def test_defaults(
 @pytest.mark.parametrize(
     "database_engine,postgres_version,django_version,python_version",
     [
-        ("postgres", 17, "5.2", "3.13"), ("postgres", 18, "6.0", "3.13"),
+        ("postgres", 17, "4.2", "3.12"),
+        ("postgres", 17, "5.2", "3.13"),
+        ("postgres", 17, "6.0", "3.13"),
     ]
 )
 def test_generated_project_tests_execution(

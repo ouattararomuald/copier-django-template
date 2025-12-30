@@ -1,72 +1,87 @@
+[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
+
 # Cookiecutter Django DRF
 
 A modern [Copier](https://github.com/copier-org/copier) template for scaffolding a Django project with best practices built-in.
 
 ## Features
 
-- For Django 5 or above
-- Works with python 3.13
+- Modern python packaging using [uv](https://github.com/astral-sh/uv)
+- Code formatting and linting with [ruff](https://github.com/astral-sh/ruff)
+- Streamlined task execution with [Task](https://taskfile.dev/)
+- Customizable Django version 4.2 or above
+- Customizable python version
+- Customizable PostgreSQL version
 - Renders Django projects with 100% starting test coverage
 - Optimized development and production settings
 - Registration via [djoser](https://djoser.readthedocs.io/en/latest/)
 - Comes with a custom user model ready to go
 - Docker support using [docker-compose](https://github.com/docker/compose) for development 
-- Run with pytest
-- Customizable PostgreSQL version
-- [Taskfile](https://taskfile.dev/) integration
+- Run with [pytest](https://docs.pytest.org/en/stable/)
+- Continuous integration with [GitHub Actions](https://docs.github.com/en/actions)
 - Integration with [Mailpit](https://github.com/axllent/mailpit/) for local email testing
 
-## Optional Integration
+## Quick Start
 
-_These features can be enabled during initial project setup._
+### Creating a new django project
 
-- [django-debug-toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/)
-- [django-extensions](https://django-extensions.readthedocs.io/en/latest/#getting-started)
-- [drf_spectacular](https://drf-spectacular.readthedocs.io/en/latest/)
-
-## Constraints
-
-- The template relies only on actively maintained third-party libraries.
-
-## Usage
-
-Assume you want to bootstrap a Django project named `twitterclone`. Instead of running `django-admin startproject` 
-and then manually adding the same metadata and configuration you inevitably forget until it hurts, you can generate 
-a complete baseline in one pass with [Cookiecutter](https://github.com/cookiecutter/cookiecutter).
-
-### 1) Install Cookiecutter:
-
-`uv tool install "cookiecutter>=1.7.0"`
-
-### 2) Generate a project from this template:
-
-`uvx cookiecutter https://github.com/ouattararomuald/cookiecutter-django-drf`
-
-Cookiecutter will ask you a series of questions (project name, configuration choices, etc.). Once you answer them, 
-it will scaffold a ready-to-run Django project in a new folder.
-
-> Note: If the generated files contain placeholders such as 'Romuald OUATTARA', replace them with your own details.
-
-### 3) Inspect the generated project
-
-`cd twitterclone/`
-
-Review the generated structure and read the project’s README carefully.
-
-### 4) Initialize Git and push to a remote
+1. Install UV
 
 ```bash
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin git@github.com:<username>/twitterclone.git
-git push -u origin main
+# MacOS or Linux
+curl -LsSf https://astral.sh/uv/install.sh | less
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | more"
 ```
+
+2. Generate your project
+
+```bash
+# Create in a new directory (my-project)
+uvx copier copy https://github.com/ouattararomuald/copier-django-template my-project/ --trust
+
+# Or create in current directory
+mkdir my-project && cd my-project
+uvx copier copy https://github.com/gotofritz/copier-python-template . --trust
+```
+
+> Note: The `--trust` flag is required as the template executes setup scripts.
+
+3. **Configure your project** by answering the interactive prompts.
+4. Initialize git and create a remote repository
+
+```bash
+cd my-project
+git init
+
+# Using GitHub CLI (recommended)
+gh repo create my-org/my-project --private --source=. --push
+
+# Or follow GitHub's instructions to push an existing repository
+```
+
+5. Set up dependencies
+
+```bash
+uv sync
+git add uv.lock && git commit -m "feat: add dependency lock file"
+```
+
+### Updating your project
+
+Keep your project aligned with the latest template improvements:
+
+```bash
+uvx copier update
+```
+
+If conflicts arise, resolve them by inspecting the generated `.rej` files.
 
 ## Development and Customization
 
 To test modifications to this template:
 
-```
+```bash
 uv run copier copy ./copier-django-drf-template --trust --vcs-ref=HEAD my-test-project
 ```

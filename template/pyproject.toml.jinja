@@ -11,22 +11,22 @@ dependencies = [
     "markdown>=3.10,<4",
     "django-filter>=25.1,<26",
     "django-cors-headers>=4.9.0,<5",
-    {%- if use_django_toolbar -%}
+{%- if use_django_toolbar %}
     "django-debug-toolbar>=6.1.0,<7",
-    {%- endif -%}
-    {%- if use_django_extensions -%}
+{%- endif %}
+{%- if use_django_extensions %}
     "django-extensions>=4.1,<5",
-    {%- endif -%}
+{%- endif %}
     "djangorestframework-simplejwt>=5.5.1,<6",
     "djoser>=2.3.3,<3",
-    {%- if use_drf_spectacular -%}
+{%- if use_drf_spectacular %}
     "drf-spectacular>=0.29.0",
-    {%- endif -%}
+{%- endif %}
     "environs>=14.5.0,<15",
     "ipython>=9.8.0,<10",
-    {%- if database_engine == 'postgres' -%}
+{%- if database_engine == 'postgres' %}
     "psycopg[binary]>=3.3.2,<4",
-    {%- endif -%}
+{%- endif %}
     "redis[hiredis]>=7.1.0,<8",
     "structlog>=25.5.0,<26",
     "whitenoise>=6.11.0,<7",

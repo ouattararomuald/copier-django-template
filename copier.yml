@@ -95,6 +95,5 @@ use_drf_spectacular:
 
 _tasks:
   - sh -c "[ -f .env ] || cp .env.default .env"
-  - ["uv", "run", "--python", "{{ python_version }}"]
   - ["uv", "run", "--env-file", ".env", "ruff", "format"]
   - ["uv", "run", "--env-file", ".env", "manage.py", "makemigrations"]

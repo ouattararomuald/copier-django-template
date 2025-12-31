@@ -15,7 +15,6 @@ def answers() -> dict[str, str]:
         "project_name": "postgres",
         "project_version": "0.1.0",
         "project_description": "A django project",
-        "project_url": "https://github.com/ouattararomuald/test-project",
         "author_name": "Romuald",
         "django_version": "5.2",
         "database_engine": "postgres",

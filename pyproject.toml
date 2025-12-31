@@ -3,7 +3,7 @@ name = "copier-django-template"
 version = "0.1.0"
 description = "A modern Copier template for scaffolding a Django project with best practices built-in"
 readme = "README.md"
-requires-python = "==3.13.*"
+requires-python = ">=3.12"
 
 dependencies = [
     "copier>=9.11.0",

@@ -35,6 +35,10 @@ jobs:
           enable-cache: true
           python-version: '3.13'
 
+      - name: Install Python versions
+        run: |
+          uv python install 3.12 3.13
+
       - name: Verifies that lock file is up-to-date
         run: uv lock
 

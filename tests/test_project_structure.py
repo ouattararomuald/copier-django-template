@@ -77,6 +77,7 @@ def test_defaults(
         answers["python_version"] = "3.13"
 
     destination_path = tmp_path / "generated_project"
+
     run_copy(
         src_path=root_path,
         dst_path=destination_path,
@@ -276,7 +277,6 @@ def run_generated_project_tests(project_path: Path):
         cwd=project_path,
         capture_output=True,
         text=True,
-        env=test_env,
     )
 
     if result.returncode != 0:

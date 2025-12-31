@@ -1,7 +1,7 @@
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
 ![Tests](https://github.com/ouattararomuald/copier-django-template/actions/workflows/tests.yml/badge.svg)
 
-# Cookiecutter Django DRF
+# Copier Django Template
 
 A modern [Copier](https://github.com/copier-org/copier) template for scaffolding a Django project with best practices built-in.
 

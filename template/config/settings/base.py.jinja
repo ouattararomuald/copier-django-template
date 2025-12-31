@@ -183,7 +183,7 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": env("REDIS_URL", default="redis://127.0.0.1:6379/0"),
         "TIMEOUT": env.int("REDIS_TIMEOUT", default=86400),
-        "KEY_PREFIX": env("REDIS_KEY_PREFIX", default="cookiecutter"),
+        "KEY_PREFIX": env("REDIS_KEY_PREFIX", default="{{ project_name }}"),
     }
 }
 

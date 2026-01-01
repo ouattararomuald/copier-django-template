@@ -23,41 +23,33 @@ def test_get_current_user(api_client, user):
 @pytest.mark.django_db
 @override_settings(DJOSER=dict(settings.DJOSER, **{"SEND_ACTIVATION_EMAIL": False}))
 def test_patch_email_change_with_send_activation_email_false(api_client, user):
-    """Verify that email is not changed during patch update.
-
-    Email is unchanged because it's used as the login field.
-    """
+    """Verify that email is changed during patch update."""
     login_user(api_client, user)
     assert user.is_active
-    original_email = user.email
 
     data = {"email": "new-email.0@example.com"}
     response = api_client.patch(reverse("user-me"), data=data, format="json")
 
     assert response.status_code == status.HTTP_200_OK
     user.refresh_from_db()
-    assert user.email == original_email
+    assert user.email == data["email"]
     assert user.is_active
 
 
 @pytest.mark.django_db
 @override_settings(DJOSER=dict(settings.DJOSER, **{"SEND_ACTIVATION_EMAIL": True}))
 def test_patch_email_change_with_send_activation_email_true(api_client, user):
-    """Verify that email is not changed during patch update.
-
-    Email is unchanged because it's used as the login field.
-    """
+    """Verify that email is changed during patch update."""
     login_user(api_client, user)
     assert user.is_active
-    original_email = user.email
 
     data = {"email": "new-email.1@example.com"}
     response = api_client.patch(reverse("user-me"), data=data, format="json")
 
     assert response.status_code == status.HTTP_200_OK
     user.refresh_from_db()
-    assert user.email == original_email
-    assert user.is_active
+    assert user.email == data["email"]
+    assert not user.is_active
 
 
 @pytest.mark.django_db
@@ -79,6 +71,7 @@ def test_put_success(api_client, user):
     data = {
         "first_name": "NewFirstName",
         "last_name": "NewLastName",
+        "email": user.email,
     }
     response = api_client.put(reverse("user-me"), data=data, format="json")
 

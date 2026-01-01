@@ -27,9 +27,34 @@ def test_user_registration_success(api_client):
     user_profile = response.json()
 
     assert set(user_profile.keys()) == {User.USERNAME_FIELD, User._meta.pk.name, *User.REQUIRED_FIELDS}
+    assert user_profile["email"] == data["email"]
     assert user_profile["username"] == data["username"]
     assert user_profile["first_name"] == data["first_name"]
     assert user_profile["last_name"] == data["last_name"]
+
+
+@pytest.mark.django_db
+def test_multiple_successive_registrations(api_client):
+    data = {
+        "email": "user@example.com",
+        "username": "user@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "password": "ComplexPa$$w0rd",
+    }
+
+    response = api_client.post(reverse("user-list"), data=data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED
+
+    data = {
+        "email": "user2@example.com",
+        "username": "user2@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "password": "ComplexPa$$w0rd",
+    }
+    response = api_client.post(reverse("user-list"), data=data, format="json")
+    assert response.status_code == status.HTTP_201_CREATED, response.data
 
 
 @pytest.mark.django_db

@@ -105,6 +105,9 @@ project_license:
   default: mit
 
 _tasks:
-  - sh -c "[ -f .env ] || cp .env.default .env"
-  - ["uv", "run", "--env-file", ".env", "ruff", "format"]
-  - ["uv", "run", "--env-file", ".env", "manage.py", "makemigrations"]
+  - command: sh -c "[ -f .env ] || cp .env.default .env"
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: ["uv", "run", "--env-file", ".env", "ruff", "format"]
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: ["uv", "run", "--env-file", ".env", "manage.py", "makemigrations"]
+    when: "{{ _copier_operation == 'copy' }}"

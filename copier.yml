@@ -93,6 +93,17 @@ use_drf_spectacular:
   help: "Use DRF Spectacular?"
   default: false
 
+project_license:
+  type: str
+  help: "Which license do you want to use?"
+  choices:
+    MIT: mit
+    Apache-2.0: apache-2.0
+    BSD-3-Clause: bsd-3-clause
+    GPL-3.0: gpl-3.0
+    None: none
+  default: mit
+
 _tasks:
   - sh -c "[ -f .env ] || cp .env.default .env"
   - ["uv", "run", "--env-file", ".env", "ruff", "format"]

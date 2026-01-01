@@ -301,6 +301,7 @@ def test_defaults(
         ".gitignore": File(),
         "conftest.py": File(),
         "manage.py": File(),
+        "LICENSE": File(contains=["MIT License"]),
         "pyproject.toml": File(contains=py_project_deps),
         "README.md": File(),
         "Taskfile.yml": File(),

@@ -23,6 +23,7 @@ def answers() -> dict[str, str]:
         "use_django_toolbar": True,
         "use_django_extensions": True,
         "use_drf_spectacular": True,
+        "project_license": "mit",
     }
 
 

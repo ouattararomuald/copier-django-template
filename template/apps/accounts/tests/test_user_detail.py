@@ -67,6 +67,7 @@ def test_user_can_put_update_own_detail(api_client, user):
     data = {
         "first_name": "NewFirstName",
         "last_name": "NewLastName",
+        "email": user.email,
     }
     response = api_client.put(
         reverse("user-detail", args=[user.pk]),

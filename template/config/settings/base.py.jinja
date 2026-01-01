@@ -191,7 +191,7 @@ CACHES = {
 # ---------------------------------------------------------
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework_simplejwt.authentication.JWTAuthentication",),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+#    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 SIMPLE_JWT = {
@@ -214,4 +214,6 @@ DJOSER = {
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": False,
     "HIDE_USERS": True,
+    "EMAIL_FRONTEND_DOMAIN": env("EMAIL_FRONTEND_DOMAIN"),
+    "EMAIL_FRONTEND_SITE_NAME": env("EMAIL_FRONTEND_SITE_NAME"),
 }

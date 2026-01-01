@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional Django Debug Toolbar
 - Optional Django Extensions
 - Optional drf-spectacular for API documentation
+- Optional license configuration
 - GitHub Actions CI/CD workflows
 - Comprehensive test coverage
 - Multiple environment configurations (local, preprod, production, test)

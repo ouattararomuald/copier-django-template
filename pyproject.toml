@@ -1,6 +1,6 @@
 [project]
 name = "copier-django-template"
-version = "0.1.0"
+version = "0.1.0-alpha.1"
 description = "A modern Copier template for scaffolding a Django project with best practices built-in"
 readme = "README.md"
 requires-python = ">=3.12"

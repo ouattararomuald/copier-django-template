@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0-alpha.1] - 2026-01-01
+
 ### Added
 - Initial release of the Copier Django Template
 - Django 4.2, 5.2, and 6.0 support
@@ -28,5 +30,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple environment configurations (local, preprod, production, test)
 
 [Unreleased]: https://github.com/ouattararomuald/copier-django-template/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/ouattararomuald/copier-django-template/releases/tag/v0.1.0
+[0.1.0-alpha.1]: https://github.com/ouattararomuald/copier-django-template/releases/tag/v0.1.0-alpha.1
 

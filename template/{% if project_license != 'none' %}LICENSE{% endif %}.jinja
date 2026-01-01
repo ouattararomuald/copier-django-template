@@ -1,0 +1,9 @@
+{% if project_license == 'mit' -%}
+{% include "template/includes/licenses/mit.jinja" %}
+{%- elif project_license == 'bsd-3-clause' -%}
+{% include "template/includes/licenses/bsd3.jinja" %}
+{%- elif project_license == 'gpl-3.0' -%}
+{% include "template/includes/licenses/gpl3.jinja" %}
+{%- elif project_license == 'apache-2.0' -%}
+{% include "template/includes/licenses/apache.jinja" %}
+{%- endif %}

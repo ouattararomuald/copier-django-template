@@ -4,6 +4,9 @@ version = "{{ project_version }}"
 description = "{{ project_description }}"
 readme = "README.md"
 requires-python = "=={{ python_version }}.*"
+{% if project_license != 'none' -%}
+license = { text = "{{ project_license | upper }}" }
+{%- endif %}
 
 dependencies = [
     "django~={{ django_version }}",

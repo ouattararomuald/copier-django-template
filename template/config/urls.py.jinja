@@ -4,11 +4,13 @@ from django.urls import include, path, re_path
 {% if use_drf_spectacular -%}
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 {%- endif %}
+from rest_framework_simplejwt.views import TokenBlacklistView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r"^api/auth/", include("djoser.urls")),
     re_path(r"^api/auth/", include("djoser.urls.jwt")),
+    path("api/auth/token/blacklist/", TokenBlacklistView.as_view(), name='token_blacklist'),
 {% if use_drf_spectacular %}
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
